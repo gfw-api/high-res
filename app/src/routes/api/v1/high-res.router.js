@@ -27,7 +27,12 @@ class HighResRouter {
             ctx.throw(400, 'Sensor not supported');
 
         }
-        const req = request(uri);
+        delete ctx.query.loggedUser;
+        const req = request({
+            uri,
+            method: 'GET',
+            qs: ctx.query
+        });
         req.on('response', (response) => {
             ctx.response.status = response.statusCode;
             ctx.set(response.headers);
