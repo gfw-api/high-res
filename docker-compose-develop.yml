@@ -1,0 +1,16 @@
+develop:
+  extends:
+    file: base.yml
+    service: base
+  ports:
+    - "35739:35729"
+  environment:
+    CT_URL: http://mymachine:9000 
+    LOCAL_URL: http://mymachine:3050
+    CT_TOKEN: null
+    API_VERSION: v1
+    SENTINEL_KEY: <key>
+    LANDSAT_KEY: <key>
+  command: develop
+  volumes:
+    - ./app:/opt/high-res/app

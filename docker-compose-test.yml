@@ -1,0 +1,11 @@
+test:
+  extends:
+    file: base.yml
+    service: base
+  ports:
+    - "3050"
+  container_name: high-res-test
+  environment:
+    NODE_ENV: test
+    CT_URL: http://mymachine:9000
+  command: test

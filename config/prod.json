@@ -1,0 +1,8 @@
+{
+    "logger": {
+        "name": "high-res",
+        "level": "warn",
+        "toFile": false,
+        "dirLogFile": null
+    }
+}

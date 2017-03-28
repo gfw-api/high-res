@@ -1,0 +1,12 @@
+{
+     "logger": {
+        "name": "high-res-DEV",
+        "level": "debug",
+        "toFile": false,
+        "dirLogFile": null
+    },
+    "service": {
+        "name": "High Res",
+        "port": 3050
+    }
+}

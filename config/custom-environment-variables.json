@@ -1,0 +1,9 @@
+{
+    "service": {
+        "port": "PORT"
+    },
+    "apikeys": {
+        "sentinel": "SENTINEL_KEY",
+        "landsat": "LANDSAT_KEY"
+    }
+}
