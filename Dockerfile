@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:7.7
+FROM node:7.7-alpine
 MAINTAINER raul.requero@vizzuality.com
 
 ENV NAME high-res
