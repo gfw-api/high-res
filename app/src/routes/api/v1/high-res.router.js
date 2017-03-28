@@ -27,26 +27,11 @@ class HighResRouter {
             ctx.throw(400, 'Sensor not supported');
 
         }
-        logger.info('query antes', ctx.query);
         delete ctx.query.loggedUser;
-        logger.info('query despues', ctx.query);
-
         const req = request({
             uri,
             method: 'GET',
-            qs: {
-                SERVICE: ctx.query.SERVICE,
-                REQUEST: ctx.query.REQUEST,
-                LAYERS: ctx.query.LAYERS,
-                BBOX: ctx.query.BBOX,
-                MAXCC: ctx.query.MAXCC,
-                CLOUDCORRECTION: ctx.query.CLOUDCORRECTION,
-                WIDTH: ctx.query.WIDTH,
-                HEIGHT: ctx.query.HEIGHT,
-                FORMAT: ctx.query.FORMAT,
-                TIME: ctx.query.TIME,
-                CRS: ctx.query.CRS
-            }
+            qs: ctx.query
         });
         req.on('response', (response) => {
             ctx.response.status = response.statusCode;
