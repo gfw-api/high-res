@@ -5,7 +5,8 @@ develop:
   ports:
     - "35739:35729"
   environment:
-    CT_URL: http://mymachine:9000 
+    CT_REGISTER_MODE: auto
+    CT_URL: http://mymachine:9000
     LOCAL_URL: http://mymachine:3050
     CT_TOKEN: null
     API_VERSION: v1
