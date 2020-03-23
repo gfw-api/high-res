@@ -3,21 +3,19 @@ const logger = require('logger');
 const koaLogger = require('koa-logger');
 const config = require('config');
 const loader = require('loader');
-const convert = require('koa-convert');
 const ctRegisterMicroservice = require('ct-register-microservice-node');
 const ErrorSerializer = require('serializers/error.serializer');
 const koaSimpleHealthCheck = require('koa-simple-healthcheck');
+const koaBody = require('koa-body');
 
-const koaBody = require('koa-body')({
+const app = new Koa();
+
+app.use(koaBody({
     multipart: true,
     jsonLimit: '50mb',
     formLimit: '50mb',
     textLimit: '50mb'
-});
-
-const app = new Koa();
-
-app.use(convert(koaBody));
+}));
 
 app.use(async (ctx, next) => {
     try {
