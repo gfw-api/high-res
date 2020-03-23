@@ -1,7 +1,7 @@
 # High Resolution WMS Microservice
 
 [![Build Status](https://travis-ci.org/gfw-api/high-res.svg?branch=develop)](https://travis-ci.org/gfw-api/high-res)
-
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8a00bada07dadb6aa23a/test_coverage)](https://codeclimate.com/github/gfw-api/high-res/test_coverage)
 
 ## Dependencies
 
