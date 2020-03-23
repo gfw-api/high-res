@@ -17,7 +17,7 @@ module.exports = (() => {
             const newPath = path ? (`${path}/${file}`) : file;
             const stat = fs.statSync(newPath);
             if (!stat.isDirectory()) {
-                if (file.lastIndexOf('Router.js') !== -1) {
+                if (file.lastIndexOf('.router.js') !== -1) {
                     if (file === 'indexRouter.js') {
                         existIndexRouter = true;
                     } else {

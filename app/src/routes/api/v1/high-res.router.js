@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const request = require('request');
+const request = require('request-promise');
 const logger = require('logger');
 const config = require('config');
 
@@ -12,7 +12,7 @@ const router = new Router({
 
 class HighResRouter {
 
-    static get(ctx) {
+    static async get(ctx) {
         logger.info('Obtaining tile');
         let uri = null;
         switch (ctx.params.sensor) {
@@ -28,16 +28,22 @@ class HighResRouter {
 
         }
         delete ctx.query.loggedUser;
-        const req = request({
-            uri,
-            method: 'GET',
-            qs: ctx.query
-        });
-        req.on('response', (response) => {
+
+        try {
+            const response = await request({
+                uri,
+                method: 'GET',
+                qs: ctx.query,
+                resolveWithFullResponse: true
+            });
+
             ctx.response.status = response.statusCode;
             ctx.set(response.headers);
-        });
-        ctx.body = req;
+            ctx.body = response.body;
+        } catch (e) {
+            ctx.response.status = e.statusCode;
+            ctx.body = e.error;
+        }
 
     }
 
