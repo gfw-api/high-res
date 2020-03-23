@@ -17,14 +17,14 @@ class HighResRouter {
         let uri = null;
         switch (ctx.params.sensor) {
 
-        case 'sentinel':
-            uri = `${SENTINEL_URL}${config.get('apikeys.sentinel')}`;
-            break;
-        case 'landsat':
-            uri = `${LANDSAT_URL}${config.get('apikeys.landsat')}`;
-            break;
-        default:
-            ctx.throw(400, 'Sensor not supported');
+            case 'sentinel':
+                uri = `${SENTINEL_URL}${config.get('apikeys.sentinel')}`;
+                break;
+            case 'landsat':
+                uri = `${LANDSAT_URL}${config.get('apikeys.landsat')}`;
+                break;
+            default:
+                ctx.throw(400, 'Sensor not supported');
 
         }
         delete ctx.query.loggedUser;

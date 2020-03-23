@@ -1,9 +1,0 @@
-base:
-  build: .
-  ports:
-    - "3050:3050"
-  container_name: high-res
-  environment:
-    PORT: 3050
-    NODE_PATH: app/src
-
