@@ -1,0 +1,6 @@
+{
+  "apikeys": {
+    "sentinel": "SENTINEL_KEY",
+    "landsat": "LANDSAT_KEY"
+  }
+}

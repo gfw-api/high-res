@@ -1,17 +1,20 @@
-develop:
-  extends:
-    file: base.yml
-    service: base
-  ports:
-    - "35739:35729"
-  environment:
-    CT_REGISTER_MODE: auto
-    CT_URL: http://mymachine:9000
-    LOCAL_URL: http://mymachine:3050
-    CT_TOKEN: null
-    API_VERSION: v1
-    SENTINEL_KEY: <key>
-    LANDSAT_KEY: <key>
-  command: develop
-  volumes:
-    - ./app:/opt/high-res/app
+version: "3"
+services:
+  develop:
+    build: .
+    ports:
+      - "3050:3050"
+    container_name: high-res
+    environment:
+      PORT: 3050
+      NODE_PATH: app/src
+      CT_REGISTER_MODE: auto
+      CT_URL: http://mymachine:9000
+      LOCAL_URL: http://mymachine:3050
+      CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      API_VERSION: v1
+      SENTINEL_KEY: <key>
+      LANDSAT_KEY: <key>
+    command: develop
+    volumes:
+      - ./app:/opt/high-res/app

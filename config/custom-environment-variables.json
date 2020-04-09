@@ -1,9 +1,13 @@
 {
-    "service": {
-        "port": "PORT"
-    },
-    "apikeys": {
-        "sentinel": "SENTINEL_KEY",
-        "landsat": "LANDSAT_KEY"
-    }
+  "service": {
+    "port": "PORT"
+  },
+  "logger": {
+    "type": "LOGGER_TYPE",
+    "level": "LOGGER_LEVEL"
+  },
+  "apikeys": {
+    "sentinel": "SENTINEL_KEY",
+    "landsat": "LANDSAT_KEY"
+  }
 }

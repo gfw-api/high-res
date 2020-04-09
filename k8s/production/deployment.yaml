@@ -3,84 +3,95 @@ kind: Deployment
 metadata:
   namespace: gfw
   labels:
-    name: {name}
-    app: gfw
-  name: {name}
+    name: high-res
+  name: high-res
 spec:
   revisionHistoryLimit: 2
   template:
     metadata:
-      annotations:
-        chaos.alpha.kubernetes.io/enabled: "true"
       labels:
-        name: {name}
+        name: high-res
     spec:
-      tolerations:
-      - key: "type"
-        operator: "Equal"
-        value: "gfw"
-        effect: "NoSchedule"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: type
-                operator: In
-                values:
-                - gfw
+              - matchExpressions:
+                - key: type
+                  operator: In
+                  values:
+                  - gfw
       containers:
-      - name: {name}
-        image: vizzuality/{name}
-        imagePullPolicy: Always
-        resources:
-          requests:
-            memory: "128Mi"
-          limits:
-            memory: "512Mi"
-        args:
-          - start
-        env:
-          - name: PORT
-            value: "3050"
-          - name: NODE_ENV
-            value: prod
-          - name: NODE_PATH
-            value: app/src
-          - name: LOCAL_URL
-            value: http://{name}.gfw.svc.cluster.local:3050
-          - name: CT_URL
-            valueFrom:
+        - name: high-res
+          image: vizzuality/high-res
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "256M"
+            limits:
+              cpu: "1"
+              memory: "512M"
+          args:
+            - start
+          env:
+            - name: PORT
+              value: "3050"
+            - name: NODE_ENV
+              value: prod
+            - name: NODE_PATH
+              value: app/src
+            - name: LOCAL_URL
+              value: http://high-res.gfw.svc.cluster.local:3050
+            - name: CT_URL
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: CT_URL
-          - name: CT_TOKEN
-            valueFrom:
+            - name: CT_TOKEN
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: CT_TOKEN
-          - name: CT_REGISTER_MODE
-            valueFrom:
+            - name: CT_REGISTER_MODE
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: CT_REGISTER_MODE
-          - name: API_VERSION
-            valueFrom:
+            - name: API_VERSION
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: API_VERSION
-          - name: SENTINEL_KEY
-            valueFrom:
+            - name: SENTINEL_KEY
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: SENTINEL_KEY
-          - name: LANDSAT_KEY
-            valueFrom:
+            - name: LANDSAT_KEY
+              valueFrom:
                 secretKeyRef:
                   name: mssecrets
                   key: LANDSAT_KEY
 
-        ports:
-          - containerPort: 3050
+          ports:
+            - containerPort: 3050
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /healthcheck
+              port: 3050
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /healthcheck
+              port: 3050
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 15
 
       restartPolicy: Always

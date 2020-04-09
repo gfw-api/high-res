@@ -1,13 +1,17 @@
 {
-	"name": "high-res",
-	"tags": ["gfw"],
-	"endpoints": [{
-		"path": "/v1/high-res/:sensor",
-		"method": "GET",
-		"binary": true,
-		"redirect": {
-			"method": "GET",
-			"path": "/api/v1/high-res/:sensor"
-		}
-	}]
+  "name": "high-res",
+  "tags": [
+    "gfw"
+  ],
+  "endpoints": [
+    {
+      "path": "/v1/high-res/:sensor",
+      "method": "GET",
+      "binary": true,
+      "redirect": {
+        "method": "GET",
+        "path": "/api/v1/high-res/:sensor"
+      }
+    }
+  ]
 }

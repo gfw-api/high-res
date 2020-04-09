@@ -1,11 +1,16 @@
-test:
-  extends:
-    file: base.yml
-    service: base
-  ports:
-    - "3050"
-  container_name: high-res-test
-  environment:
-    NODE_ENV: test
-    CT_URL: http://mymachine:9000
-  command: test
+version: "3"
+services:
+  test:
+    build: .
+    ports:
+      - "3050"
+    container_name: high-res-test
+    environment:
+      PORT: 3050
+      NODE_PATH: app/src
+      NODE_ENV: test
+      CT_URL: http://mymachine:9000
+      CT_REGISTER_MODE: auto
+      CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      API_VERSION: v1
+    command: test
