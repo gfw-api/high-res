@@ -37,7 +37,7 @@
     "grunt-mocha-test": "^0.13.3",
     "grunt-notify": "^0.4.5",
     "grunt-simple-nyc": "^3.0.1",
-    "husky": "^4.2.3",
+    "husky": "^4.2.5",
     "lint-staged": "^10.1.6",
     "load-grunt-tasks": "^5.1.0",
     "mocha": "^7.1.1",
