@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "bunyan": "^1.8.12",
-    "config": "^3.3.0",
+    "config": "^3.3.1",
     "ct-register-microservice-node": "^2.1.7",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
