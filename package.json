@@ -45,7 +45,7 @@
     "nyc": "^15.1.0"
   },
   "dependencies": {
-    "bunyan": "^1.8.12",
+    "bunyan": "^1.8.14",
     "config": "^3.3.1",
     "ct-register-microservice-node": "^2.1.7",
     "koa": "^2.11.0",
