@@ -15,6 +15,7 @@ services:
       API_VERSION: v1
       SENTINEL_KEY: <key>
       LANDSAT_KEY: <key>
+      FASTLY_ENABLED: "false"
     command: develop
     volumes:
       - ./app:/opt/high-res/app
