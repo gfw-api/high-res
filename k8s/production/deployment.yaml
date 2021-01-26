@@ -1,12 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: gfw
   labels:
     name: high-res
   name: high-res
+  namespace: gfw
 spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 1
   revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      name: high-res
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -17,22 +27,12 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: type
-                  operator: In
-                  values:
-                  - gfw
+                  - key: type
+                    operator: In
+                    values:
+                      - gfw
       containers:
-        - name: high-res
-          image: vizzuality/high-res
-          imagePullPolicy: Always
-          resources:
-            requests:
-              cpu: "0.25"
-              memory: "256M"
-            limits:
-              cpu: "1"
-              memory: "512M"
-          args:
+        - args:
             - start
           env:
             - name: PORT
@@ -46,52 +46,89 @@ spec:
             - name: CT_URL
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: CT_URL
+                  name: mssecrets
             - name: CT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: CT_TOKEN
+                  name: mssecrets
             - name: CT_REGISTER_MODE
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: CT_REGISTER_MODE
+                  name: mssecrets
             - name: API_VERSION
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: API_VERSION
+                  name: mssecrets
             - name: SENTINEL_KEY
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: SENTINEL_KEY
+                  name: mssecrets
             - name: LANDSAT_KEY
               valueFrom:
                 secretKeyRef:
-                  name: mssecrets
                   key: LANDSAT_KEY
-
+                  name: mssecrets
+            - name: FASTLY_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  key: FASTLY_ENABLED
+                  name: mssecrets
+            - name: FASTLY_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  key: FASTLY_APIKEY
+                  name: mssecrets
+                  optional: true
+            - name: FASTLY_SERVICEID
+              valueFrom:
+                secretKeyRef:
+                  key: FASTLY_SERVICEID
+                  name: mssecrets
+                  optional: true
+          image: gfwdockerhub/high-res
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthcheck
+              port: 3050
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: high-res
           ports:
             - containerPort: 3050
+              protocol: TCP
           readinessProbe:
-            httpGet:
-              scheme: HTTP
-              path: /healthcheck
-              port: 3050
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
-            periodSeconds: 15
-          livenessProbe:
-            httpGet:
-              scheme: HTTP
-              path: /healthcheck
-              port: 3050
             failureThreshold: 3
+            httpGet:
+              path: /healthcheck
+              port: 3050
+              scheme: HTTP
             initialDelaySeconds: 30
-            timeoutSeconds: 5
             periodSeconds: 15
-
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512M
+            requests:
+              cpu: 250m
+              memory: 256M
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
