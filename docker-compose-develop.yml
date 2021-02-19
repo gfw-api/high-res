@@ -3,14 +3,14 @@ services:
   develop:
     build: .
     ports:
-      - "3050:3050"
+      - "3051:3051"
     container_name: high-res
     environment:
-      PORT: 3050
+      PORT: 3051
       NODE_PATH: app/src
       CT_REGISTER_MODE: auto
       CT_URL: http://mymachine:9000
-      LOCAL_URL: http://mymachine:3050
+      LOCAL_URL: http://mymachine:3051
       CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
       API_VERSION: v1
       SENTINEL_KEY: <key>
