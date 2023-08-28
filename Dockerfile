@@ -1,11 +1,11 @@
-FROM node:12-alpine
+FROM node:20.4-alpine3.18
 MAINTAINER info@vizzuality.com
 
 ENV NAME high-res
 ENV USER high-res
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache --update bash git openssh python alpine-sdk
+    apk add --no-cache --update bash git openssh python3 alpine-sdk
 
 RUN addgroup $USER && adduser -s /bin/bash -D -G $USER $USER
 

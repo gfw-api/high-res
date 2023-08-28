@@ -4,6 +4,7 @@ const chai = require('chai');
 const config = require('config');
 
 const { getTestServer } = require('./utils/test-server');
+const { mockValidateRequestWithApiKey } = require('./utils/mocks');
 
 chai.should();
 
@@ -30,6 +31,7 @@ describe('Get datasets tests', () => {
     // });
 
     it('Get data for sentinel should return an error if the upstream sentinel account returns an error', async () => {
+        mockValidateRequestWithApiKey({});
         const responseString = '<?xml version=\'1.0\' encoding="UTF-8"?>\n<ServiceExceptionReport version="1.3.0"\n\txmlns="http://www.opengis.net/ogc"\n\txmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n\txsi:schemaLocation="http://www.opengis.net/ogc http://schemas.opengis.net/wms/1.3.0/exceptions_1_3_0.xsd">\n\t<ServiceException>\n\t\t<![CDATA[ It looks like your Sentinel Hub account has expired. ]]>\n\t</ServiceException>\n</ServiceExceptionReport>';
 
         nock('http://services.sentinel-hub.com')
@@ -37,13 +39,15 @@ describe('Get datasets tests', () => {
             .reply(400, responseString);
 
         const response = await requester
-            .get(`/api/v1/high-res/sentinel`);
+            .get(`/api/v1/high-res/sentinel`)
+            .set('x-api-key', 'api-key-test');
 
         response.status.should.equal(400);
         response.text.should.equal(responseString);
     });
 
     it('Get data for sentinel should return a 200 and the upstream data (happy case)', async () => {
+        mockValidateRequestWithApiKey({});
         const responseString = 'happy data';
 
         nock('http://services.sentinel-hub.com')
@@ -51,13 +55,15 @@ describe('Get datasets tests', () => {
             .reply(200, responseString);
 
         const response = await requester
-            .get(`/api/v1/high-res/sentinel`);
+            .get(`/api/v1/high-res/sentinel`)
+            .set('x-api-key', 'api-key-test');
 
         response.status.should.equal(200);
         response.text.should.equal(responseString);
     });
 
     it('Get data for landsat should return an error if the upstream landsat account returns an error', async () => {
+        mockValidateRequestWithApiKey({});
         const responseString = '<?xml version=\'1.0\' encoding="UTF-8"?>\n<ServiceExceptionReport version="1.3.0"\n\txmlns="http://www.opengis.net/ogc"\n\txmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n\txsi:schemaLocation="http://www.opengis.net/ogc http://schemas.opengis.net/wms/1.3.0/exceptions_1_3_0.xsd">\n\t<ServiceException>\n\t\t<![CDATA[ It looks like your Sentinel Hub account has expired. ]]>\n\t</ServiceException>\n</ServiceExceptionReport>';
 
         nock('http://services-uswest2.sentinel-hub.com')
@@ -65,13 +71,15 @@ describe('Get datasets tests', () => {
             .reply(400, responseString);
 
         const response = await requester
-            .get(`/api/v1/high-res/landsat`);
+            .get(`/api/v1/high-res/landsat`)
+            .set('x-api-key', 'api-key-test');
 
         response.status.should.equal(400);
         response.text.should.equal(responseString);
     });
 
     it('Get data for landsat should return a 200 and the upstream data (happy case)', async () => {
+        mockValidateRequestWithApiKey({});
         const responseString = 'happy data';
 
         nock('http://services-uswest2.sentinel-hub.com')
@@ -79,7 +87,8 @@ describe('Get datasets tests', () => {
             .reply(200, responseString);
 
         const response = await requester
-            .get(`/api/v1/high-res/landsat`);
+            .get(`/api/v1/high-res/landsat`)
+            .set('x-api-key', 'api-key-test');
 
         response.status.should.equal(200);
         response.text.should.equal(responseString);
